@@ -11,7 +11,7 @@ import os
 
 class Account():
 
-    accounts = []
+    __accounts = []
 
     @classmethod
     def validate(cls):
@@ -20,8 +20,8 @@ class Account():
             acno = GetNumber()
             print("Enter your Pin ", end='')
             pin = GetNumber()
-            for account in cls.accounts:
-                if (account.acno == acno and account.pin == pin):
+            for account in cls.__accounts:
+                if (account.__acno == acno and account.__pin == pin):
                     print("Validation Successful")
                     print(
                         "------------------------------------------------------------------")
@@ -33,22 +33,22 @@ class Account():
             print(NameError)
 
     def __init__(self) -> None:
-        self.name = input("Enter Name ").strip().title()
-        self.acno = int(input("Enter Acno "))
-        self.pin = int(input("Enter Pin "))
-        self.security_question = self.securityQuestion()
-        self.security_question_answer = self.securityQuestionAnswer()
-        self.balance = 0
-        Account.accounts.append(self)
+        self.__name = input("Enter Name ").strip().title()
+        self.__acno = int(input("Enter Acno "))
+        self.__pin = int(input("Enter Pin "))
+        self.__security_question = self.securityQuestion()
+        self.__security_question_answer = self.securityQuestionAnswer()
+        self.__balance = 0
+        Account.__accounts.append(self)
         print("Account Was Created Successfully")
 
     def showAccount(self):
         print("------------------------------------------------------------------")
-        print("Name                     = ", self.name)
-        print("Account Number           = ", self.acno)
-        print("Pin                      = ", self.pin)
-        print("Security Question        = ", self.security_question)
-        print("Security Question Answer = ", self.security_question_answer)
+        print("Name                     = ", self.__name)
+        print("Account Number           = ", self.__acno)
+        print("Pin                      = ", self.__pin)
+        print("Security Question        = ", self.__security_question)
+        print("Security Question Answer = ", self.__security_question_answer)
         print("Account Balance          = ", self.humanizeAmount())
         print("------------------------------------------------------------------")
 
@@ -56,7 +56,7 @@ class Account():
 
     def humanizeAmount(self):
         num = ''
-        stri = str(self.balance)[::-1]
+        stri = str(self.__balance)[::-1]
         for i in range(len(stri)):
             if i >= 3:
                 if i % 2 != 0:
@@ -67,25 +67,22 @@ class Account():
     #  Function to Greet the Account Owner When he login
 
     def greet(self):
-        print("Hello", self.name)
+        print("Hello,", self.__name)
 
     def checkBalance(self):
-        self.greet()
         print("Your Available Balance is ", self.humanizeAmount())
 
     def deposit(self):
-        self.greet()
         print("Enter Amount to Deposit ")
-        self.balance += GetNumber()
+        self.__balance += GetNumber()
         print("Amount Deposited SuccessFully")
         print("Current Balance =", self.humanizeAmount())
 
     def withdraw(self):
-        self.greet()
         print("Enter Amount to Withdraw ")
         d = GetNumber()
-        if (d < self.balance):
-            self.balance -= d
+        if (d < self.__balance):
+            self.__balance -= d
             print("withdrawal Successful")
             print("Current Balance =", self.humanizeAmount())
         else:
@@ -94,16 +91,16 @@ class Account():
     def transferMoney(self):
         print("Enter Reciver Account Number ")
         rnum = GetNumber()
-        for account in Account.accounts:
-            if account.acno == rnum:
+        for account in Account.__accounts:
+            if account.__acno == rnum:
                 print("Validation Successful")
                 print(
                     "------------------------------------------------------------------")
                 print("Enter the Transfer Amount ")
                 samount = GetNumber()
-                if self.balance >= samount:
-                    self.balance -= samount
-                    account.balance += samount
+                if self.__balance >= samount:
+                    self.__balance -= samount
+                    account.__balance += samount
                 else:
                     print("Not enough Balance to Transfer")
                 print("Transfer Successful !!! ")
@@ -120,11 +117,11 @@ class Account():
         print("Enter your Pin ")
         pin = GetNumber()
         if (pin == -0000):
-            for account in Account.accounts:
-                if (account.acno == acno):
-                    print(account.security_question)
+            for account in Account.__accounts:
+                if (account.__acno == acno):
+                    print(account.__security_question)
                     ans = input()
-                    if (ans == account.security_question_answer):
+                    if (ans == account.__security_question_answer):
                         print(
                             "------------------------------------------------------------------")
                         print("Validated")
@@ -132,8 +129,8 @@ class Account():
                             "------------------------------------------------------------------")
                         print("Enter your New PIN ", end='')
                         newPin = GetNumber()
-                        if (account.pin != newPin):
-                            account.pin = newPin
+                        if (account.__pin != newPin):
+                            account.__pin = newPin
                             print("Pin Changed Successfully")
                         else:
                             print("Please Enter a Different Pin")
@@ -141,12 +138,12 @@ class Account():
             else:
                 print("Account not found")
         else:
-            for account in Account.accounts:
-                if (account.pin == acno and account.pin == pin):
+            for account in Account.__accounts:
+                if (account.__pin == acno and account.__pin == pin):
                     print("Enter your New PIN ", end='')
                     newPin = GetNumber()
-                    if (account.pin != newPin):
-                        account.pin = newPin
+                    if (account.__pin != newPin):
+                        account.__pin = newPin
                         print("Pin Changed Successfully")
                     else:
                         print("Please Enter a Different Password")
@@ -174,13 +171,13 @@ class Account():
 
     def securityQuestionAnswer(self):
         print("------------------------------------------------------------------")
-        print(self.security_question)
+        print(self.__security_question)
         sa = input()
         print("------------------------------------------------------------------")
         return sa
 
     def __str__(self) -> str:
-        return str(self.acno)
+        return str(self.__acno)
 
 
 # Get Number Function to Get a Valid Number
@@ -192,16 +189,13 @@ def GetNumber():
         except ValueError:
             print("Oops! That was not a valid number Try again...")
 
-
 # Driver Code
 choice = ""
-
 while(choice != 0):
     os.system('cls')    # To Clear the Console
-
     print("------------------------- Welcome to MGB -------------------------")
     # Options to select
-    print("1) Create Account \n2) Deposit \n3) Withdraw \n4) View Balance\n5) Change pin\n6) Show Account \n7) Transfer Money \n0) For Exit")
+    print("1) Create Account \n2) Make Transactions")
     print("------------------------------------------------------------------")
     print("Enter your choice ", end='')
     choice = GetNumber()
@@ -211,44 +205,49 @@ while(choice != 0):
             a = Account()
             print("------------------------------------------------------------------")
         case 2:
-            print("------------------------------------------------------------------")
-            a = Account.validate()
-            if (a != -1):
-                a.deposit()
-            print("------------------------------------------------------------------")
-        case 3:
-            print("------------------------------------------------------------------")
-            a = Account.validate()
-            if (a != -1):
-                a.withdraw()
-            print("------------------------------------------------------------------")
-        case 4:
-            print("------------------------------------------------------------------")
-            a = Account.validate()
-            if (a != -1):
-                a.checkBalance()
-            print("------------------------------------------------------------------")
-        case 5:
-            print("------------------------------------------------------------------")
-            a.changePin()
-            print("------------------------------------------------------------------")
-        case 6:
-            print("------------------------------------------------------------------")
-            a = Account.validate()
-            if (a != -1):
-                a.showAccount()
-            print("------------------------------------------------------------------")
-        case 7:
-            print("------------------------------------------------------------------")
-            a = Account.validate()
-            if (a != -1):
-                a.transferMoney()
-            print("------------------------------------------------------------------")
-
-        case 0:
-            print("------------------------------------------------------------------")
-            print("                  good bye !! Visit Again !!")
-            print("------------------------------------------------------------------")
+            a=Account.validate()
+            if a!=-1:
+                choice2=''
+                while choice2 != 0:
+                    os.system('cls')
+                    a.greet()
+                    print("1) Deposit \n2) Withdraw \n3) View Balance\n4) Change pin\n5) Show Account \n6) Transfer Money \n0) For Exit")
+                    print("------------------------------------------------------------------")
+                    print("Enter your choice ", end='')
+                    choice2 = GetNumber()
+                    match choice2:
+                        case 1:
+                            print("------------------------------------------------------------------")
+                            a.deposit()
+                            print("------------------------------------------------------------------")
+                        case 2:
+                            print("------------------------------------------------------------------")
+                            a.withdraw()
+                            print("------------------------------------------------------------------")
+                        case 3:
+                            print("------------------------------------------------------------------")
+                            a.checkBalance()
+                            print("------------------------------------------------------------------")
+                        case 4:
+                            print("------------------------------------------------------------------")
+                            a.changePin()
+                            print("------------------------------------------------------------------")
+                        case 5:
+                            print("------------------------------------------------------------------")
+                            a.showAccount()
+                            print("------------------------------------------------------------------")
+                        case 6:
+                            print("------------------------------------------------------------------")
+                            a.transferMoney()
+                            print("------------------------------------------------------------------")
+                        case 0:
+                            print("------------------------------------------------------------------")
+                            print("                  good bye !! Visit Again !!")
+                            print("------------------------------------------------------------------")
+                        case _:
+                            print("Please Enter a Valid Choice")
+                    if choice2!=0:
+                        input("Please Enter to Continue")
         case _:
             print("Please Enter a Valid Choice")
     input("Please Enter to Continue")
