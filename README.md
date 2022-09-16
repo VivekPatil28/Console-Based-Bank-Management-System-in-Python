@@ -2,7 +2,7 @@
 ****
   Bank Management System is developed to make the basic understanding of OOPS concepts. 
 
-##Some Important Functions:-
+  ## Some Important Functions:-
   - The humanizeAmount Function is used to display the Account Balance of the user separated using commas to make a better understanding of Account Balance
   
   
