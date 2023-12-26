@@ -257,7 +257,7 @@ while True:
             # Driver Code
             choice = ""
             while(choice != 0):
-                # os.system('cls')    # To Clear the Console
+                os.system('cls')    # To Clear the Console
                 print("------------------------- Welcome to MGB -------------------------")
                 # Options to select
                 print("1) Create Account \n2) Make Transactions")
